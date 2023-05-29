@@ -1,6 +1,7 @@
 # movies_app
 
-A new Flutter project.
+This is a basic flutter project for educational purposes.
+
 
 ## Getting Started
 
