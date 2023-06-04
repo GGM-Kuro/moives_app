@@ -18,7 +18,15 @@ class CardSwiper extends StatelessWidget {
 
       final size = MediaQuery.of( context ).size;
 
-
+      if( this.movies.length == 0 ) {
+          return Container(
+                width: double.infinity,
+                height: size.height * 05,
+                child: const Center(
+                child: CircularProgressIndicator(),
+                    ),
+                  );
+      }
 
 
       return SizedBox(
@@ -38,7 +46,7 @@ class CardSwiper extends StatelessWidget {
                 child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                   child: FadeInImage(
-                      placeholder: AssetImage('assets/images/no-image.jpg'),
+                      placeholder: const AssetImage('assets/images/no-image.jpg'),
                       // image: NetworkImage('https://via.placeholder.com/300x400'),
                       image: NetworkImage( movie.fullPosterImg ),
                       fit: BoxFit.cover,

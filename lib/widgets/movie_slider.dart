@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../models/models.dart';
+
 class MovieSlider extends StatelessWidget {
-  const MovieSlider({super.key});
+  const MovieSlider({super.key, required this.movies, this.title});
 
-
+  final List<Movie> movies;
+  final String? title;
 
   @override
   Widget build(BuildContext context) {
@@ -13,19 +16,25 @@ class MovieSlider extends StatelessWidget {
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-          const Padding(
+
+          if (title != null)
+              Padding(
               padding: EdgeInsets.symmetric( horizontal: 20 ),
-              child: Text(
-                  'Populares',
+              child:
+
+              Text(
+                  title!,
                   style:  TextStyle( fontSize: 20, fontWeight: FontWeight.bold )
               ),
-          ),
+
+            ),
+
           const SizedBox(height: 5,),
           Expanded(
             child: ListView.builder(
             scrollDirection: Axis.horizontal,
-                itemCount: 20,
-                itemBuilder: ( _ , int index) => const _MoviePoster()
+                itemCount: movies.length,
+                itemBuilder: ( _ , int index) =>  _MoviePoster(movies[index])
             ),
           )
           ],
@@ -35,7 +44,9 @@ class MovieSlider extends StatelessWidget {
 }
 
 class _MoviePoster extends StatelessWidget {
-  const _MoviePoster();
+  const _MoviePoster(this.movie);
+
+    final Movie movie;
 
   @override
   Widget build(BuildContext context) {
@@ -50,10 +61,9 @@ class _MoviePoster extends StatelessWidget {
         onTap: () => Navigator.pushNamed(context, 'details', arguments: 'movie-instance'),
           child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
-            child: const FadeInImage(
-                placeholder: AssetImage('assets/images/no-image.jpg'),
-                // image: NetworkImage('https://via.placeholder.com/300x400'),
-                image: AssetImage('assets/images/no-image.jpg'),
+            child:  FadeInImage(
+                placeholder: const AssetImage('assets/images/no-image.jpg'),
+                image: NetworkImage(movie.fullPosterImg),
                 width: 130,
                 height: 190,
                 fit: BoxFit.cover,
@@ -62,9 +72,16 @@ class _MoviePoster extends StatelessWidget {
         ),
 
         const SizedBox( height: 5, ),
-
-        const Text(
-            'Starwars aoeu anoehu aoeunsthao euoaeaoeu uhaoentihra',
+         Text(
+                movie.title,
+                style: const TextStyle(fontWeight: FontWeight.bold
+                    ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+            ),
+         Text(
+            movie.overview,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
