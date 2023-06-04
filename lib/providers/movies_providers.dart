@@ -12,23 +12,28 @@ class MoviesProvider extends ChangeNotifier{
     List<Movie> onDisplayMovies = [];
     List<Movie> popularMovies = [];
 
+    int _popularPages = 0;
 
     MoviesProvider(){
-        print('MoviesProvider init');
-        this.getOnDisplayMovies();
-        this.getPopularMovies();
+        getOnDisplayMovies();
+        getPopularMovies();
+    }
+
+    Future<String> _getJsonData(String endpoint, [ int page = 1 ]) async{
+        var url = Uri.https(_baseurl, endpoint, {
+              'api_key': _apiKey,
+              'language': _language,
+              'page': '$page',
+      });
+          final response = await http.get(url);
+          return response.body;
+
     }
 
 
     getOnDisplayMovies() async{
-    var url = Uri.https(_baseurl, '3/movie/now_playing', {
-          'api_key': _apiKey,
-          'language': _language,
-          'page': '1',
-      });
-  // Await the http get response, then decode the json-formatted response.
-      final response = await http.get(url);
-      final nowPlayingResponse =  NowPlayingResponse.fromJson(response.body);
+      final jsonData = await _getJsonData('3/movie/now_playing');
+      final nowPlayingResponse =  NowPlayingResponse.fromJson(jsonData);
       onDisplayMovies = nowPlayingResponse.results;
       notifyListeners();
 
@@ -37,16 +42,11 @@ class MoviesProvider extends ChangeNotifier{
 
 
     getPopularMovies() async{
-    var url = Uri.https(_baseurl, '3/movie/popular', {
-          'api_key': _apiKey,
-          'language': _language,
-          'page': '1',
-      });
-  // Await the http get response, then decode the json-formatted response.
-      final response = await http.get(url);
-      final popularResponse =  PopularResponse.fromJson(response.body);
+
+      _popularPages++;
+      final jsonData = await _getJsonData('3/movie/popular', _popularPages);
+      final popularResponse =  PopularResponse.fromJson(jsonData);
       popularMovies = [...popularMovies,...popularResponse.results];
-      print(popularMovies.length);
       notifyListeners();
 
     }
