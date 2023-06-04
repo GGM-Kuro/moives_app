@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 class MovieSlider extends StatelessWidget {
+  const MovieSlider({super.key});
+
 
 
   @override
   Widget build(BuildContext context) {
-      return  Container(
+      return  SizedBox(
       width: double.infinity,
       height: 290,
       child: Column(
@@ -18,12 +20,12 @@ class MovieSlider extends StatelessWidget {
                   style:  TextStyle( fontSize: 20, fontWeight: FontWeight.bold )
               ),
           ),
-          SizedBox(height: 5,),
+          const SizedBox(height: 5,),
           Expanded(
             child: ListView.builder(
             scrollDirection: Axis.horizontal,
                 itemCount: 20,
-                itemBuilder: ( _ , int index) => _MoviePoster()
+                itemBuilder: ( _ , int index) => const _MoviePoster()
             ),
           )
           ],
@@ -33,16 +35,14 @@ class MovieSlider extends StatelessWidget {
 }
 
 class _MoviePoster extends StatelessWidget {
-  const _MoviePoster({
-    super.key,
-  });
+  const _MoviePoster();
 
   @override
   Widget build(BuildContext context) {
     return Container(
     width: 130,
     height: 290,
-    margin: EdgeInsets.symmetric( horizontal: 10, ),
+    margin: const EdgeInsets.symmetric( horizontal: 10, ),
     child: Column(
         children: [
 
@@ -50,7 +50,7 @@ class _MoviePoster extends StatelessWidget {
         onTap: () => Navigator.pushNamed(context, 'details', arguments: 'movie-instance'),
           child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
-            child: FadeInImage(
+            child: const FadeInImage(
                 placeholder: AssetImage('assets/images/no-image.jpg'),
                 // image: NetworkImage('https://via.placeholder.com/300x400'),
                 image: AssetImage('assets/images/no-image.jpg'),
@@ -61,9 +61,9 @@ class _MoviePoster extends StatelessWidget {
           ),
         ),
 
-        SizedBox( height: 5, ),
+        const SizedBox( height: 5, ),
 
-        Text(
+        const Text(
             'Starwars aoeu anoehu aoeunsthao euoaeaoeu uhaoentihra',
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
