@@ -12,7 +12,7 @@ class MoviesProvider extends ChangeNotifier{
     List<Movie> onDisplayMovies = [];
     List<Movie> popularMovies = [];
 
-    int _popularPages = 0;
+    int _popularPages = 495;
 
     MoviesProvider(){
         getOnDisplayMovies();
@@ -42,6 +42,9 @@ class MoviesProvider extends ChangeNotifier{
 
 
     getPopularMovies() async{
+
+
+      if (_popularPages >= 500) _popularPages = 0;
 
       _popularPages++;
       final jsonData = await _getJsonData('3/movie/popular', _popularPages);
