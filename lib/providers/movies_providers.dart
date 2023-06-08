@@ -14,7 +14,7 @@ class MoviesProvider extends ChangeNotifier{
 
     Map<int, List<Cast>> movieCast = {};
 
-    int _popularPages = 495;
+    int _popularPages = 0;
 
     MoviesProvider(){
         getOnDisplayMovies();
@@ -22,7 +22,7 @@ class MoviesProvider extends ChangeNotifier{
     }
 
     Future<String> _getJsonData(String endpoint, [ int page = 1 ]) async{
-        var url = Uri.https(_baseurl, endpoint, {
+        final url = Uri.https(_baseurl, endpoint, {
               'api_key': _apiKey,
               'language': _language,
               'page': '$page',
@@ -67,5 +67,19 @@ class MoviesProvider extends ChangeNotifier{
         // notifyListeners();
         //
     }
+
+    Future<List<Movie>> searchMovie( String query ) async{
+
+
+        final url = Uri.https(_baseurl, '3/search/movie', {
+              'api_key': _apiKey,
+              'language': _language,
+              'query': query,
+      });
+      final response = await http.get(url);
+        final searchResponse = SearchResponse.fromJson(response.body);
+        return searchResponse.results;
+    }
+
 
 }
